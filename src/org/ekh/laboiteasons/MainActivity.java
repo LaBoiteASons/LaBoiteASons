@@ -3,6 +3,7 @@ package org.ekh.laboiteasons;
 import org.ekh.adapter.ImageAdapter;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -23,9 +24,11 @@ public class MainActivity extends Activity implements OnGestureListener {
 	GridView gridView1;
 	GridView gridView2;
 	static final String[] MOBILE_OS_1 = new String[] { 
-		"Android", "iOS" };
+		"shoot", "hello" };
 	static final String[] MOBILE_OS_2 = new String[] { 
 		"Windows", "Blackberry" };
+	
+	MediaPlayer mp = null;
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -60,7 +63,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 						getApplicationContext(),
 						((TextView) v.findViewById(R.id.grid_item_label))
 						.getText(), Toast.LENGTH_SHORT).show();
-
+				playThatSound("hello");
 			}
 		});
 		gridView2.setOnItemClickListener(new OnItemClickListener() {
@@ -70,6 +73,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 						getApplicationContext(),
 						((TextView) v.findViewById(R.id.grid_item_label))
 						.getText(), Toast.LENGTH_SHORT).show();
+				playThatSound("hello");
 
 			}
 		});
@@ -146,4 +150,16 @@ public class MainActivity extends Activity implements OnGestureListener {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	protected void playThatSound(String theSoundString) {
+        if (mp != null) {
+            mp.reset();
+            mp.release();
+        }
+        if (theSoundString == "shoot")
+            mp = MediaPlayer.create(this, R.raw.shoot);
+        else if (theSoundString == "hello")
+        	mp = MediaPlayer.create(this, R.raw.hello);
+        mp.start();
+    }
 }
