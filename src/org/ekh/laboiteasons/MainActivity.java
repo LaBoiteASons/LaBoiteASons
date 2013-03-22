@@ -1,11 +1,13 @@
 package org.ekh.laboiteasons;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 import org.ekh.adapter.ImageAdapter;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -24,7 +26,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 	
 	GridView gridView;
 	static final String[] SOUNDS = new String[] { 
-		"shoot", "hello", "Windows", "Blackberry" };
+		"dayum","fart","hallelujah","applause","cow", "check","bell","dayum","cat","ninja" };
 	
 	MediaPlayer mp = null;
 	
@@ -52,7 +54,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 		view = (ViewFlipper)findViewById(R.id.flipper);
 		
 		//Count the pages
-		int nb_sounds_per_page = 2;
+		int nb_sounds_per_page = 3;
 		nb_page = SOUNDS.length/nb_sounds_per_page;
 		int reste = SOUNDS.length%nb_sounds_per_page;
 		if(reste > 0){
@@ -102,7 +104,8 @@ public class MainActivity extends Activity implements OnGestureListener {
 							getApplicationContext(),
 							((TextView) v.findViewById(R.id.grid_item_label))
 							.getText(), Toast.LENGTH_SHORT).show();
-					playThatSound("hello");
+					String soundString = ((TextView) v.findViewById(R.id.grid_item_label)).getText().toString();
+					playThatSound(soundString);
 				}
 			});
 			
@@ -177,15 +180,29 @@ public class MainActivity extends Activity implements OnGestureListener {
 		return false;
 	}
 	
+	public static int getResId(String variableName, Class<?> c) {
+	    Field field = null;
+	    int resId = 0;
+	    try {
+	        field = c.getField(variableName);
+	        try {
+	            resId = field.getInt(null);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return resId;
+	}
+	
 	protected void playThatSound(String theSoundString) {
         if (mp != null) {
             mp.reset();
             mp.release();
         }
-        if (theSoundString == "shoot")
-            mp = MediaPlayer.create(this, R.raw.shoot);
-        else if (theSoundString == "hello")
-        	mp = MediaPlayer.create(this, R.raw.hello);
+        if (Arrays.asList(SOUNDS).contains(theSoundString))
+            mp = MediaPlayer.create(this, getResId(theSoundString, R.raw.class));
         mp.start();
     }
 }

@@ -1,5 +1,7 @@
 package org.ekh.adapter;
 
+import java.lang.reflect.Field;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,22 @@ public class ImageAdapter extends BaseAdapter {
 	private Context context;
 	private final String[] mobileValues;
 
+	public static int getResId(String variableName, Class<?> c) {
+	    Field field = null;
+	    int resId = 0;
+	    try {
+	        field = c.getField(variableName);
+	        try {
+	            resId = field.getInt(null);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return resId;
+	}
+	
 	public ImageAdapter(Context context, String[] mobileValues) {
 		this.context = context;
 		this.mobileValues = mobileValues;
@@ -43,14 +61,10 @@ public class ImageAdapter extends BaseAdapter {
 
 			String mobile = mobileValues[position];
 
-			if (mobile.equals("shoot")) {
-				imageView.setImageResource(R.drawable.windows_logo);
-			} else if (mobile.equals("hello")) {
-				imageView.setImageResource(R.drawable.ios_logo);
-			} else if (mobile.equals("Blackberry")) {
-				imageView.setImageResource(R.drawable.blackberry_logo);
-			} else {
-				imageView.setImageResource(R.drawable.android_logo);
+			for(String element : mobileValues){
+				if (mobile.equals(element)) {
+					imageView.setImageResource(getResId(element, R.drawable.class));
+				}
 			}
 
 		} else {
