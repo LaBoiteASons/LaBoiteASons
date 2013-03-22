@@ -5,6 +5,7 @@ import org.ekh.adapter.ImageAdapter;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -21,12 +22,9 @@ import android.widget.ViewFlipper;
 
 public class MainActivity extends Activity implements OnGestureListener {
 	
-	GridView gridView1;
-	GridView gridView2;
-	static final String[] MOBILE_OS_1 = new String[] { 
-		"shoot", "hello" };
-	static final String[] MOBILE_OS_2 = new String[] { 
-		"Windows", "Blackberry" };
+	GridView gridView;
+	static final String[] SOUNDS = new String[] { 
+		"shoot", "hello", "Windows", "Blackberry" };
 	
 	MediaPlayer mp = null;
 	
@@ -41,55 +39,80 @@ public class MainActivity extends Activity implements OnGestureListener {
 	
 	private GestureDetector detector;
 	private ViewFlipper view;
+	
+	private int nb_page;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		detector = new GestureDetector(this,this);
 		view = (ViewFlipper)findViewById(R.id.flipper);
-
-		gridView1 = (GridView) findViewById(R.id.gridView1);
-		gridView2 = (GridView) findViewById(R.id.gridView2);
-
-		gridView1.setAdapter(new ImageAdapter(this, MOBILE_OS_1));
-		gridView2.setAdapter(new ImageAdapter(this, MOBILE_OS_2));
-
-		gridView1.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				Toast.makeText(
-						getApplicationContext(),
-						((TextView) v.findViewById(R.id.grid_item_label))
-						.getText(), Toast.LENGTH_SHORT).show();
-				playThatSound("hello");
-			}
-		});
-		gridView2.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-				Toast.makeText(
-						getApplicationContext(),
-						((TextView) v.findViewById(R.id.grid_item_label))
-						.getText(), Toast.LENGTH_SHORT).show();
-				playThatSound("hello");
-
-			}
-		});
 		
-		gridView1.setOnTouchListener(new OnTouchListener(){
-		    @Override
-		    public boolean onTouch(View v, MotionEvent event) {
-		        return detector.onTouchEvent(event);
-		    }
-		});
-		gridView2.setOnTouchListener(new OnTouchListener(){
-		    @Override
-		    public boolean onTouch(View v, MotionEvent event) {
-		        return detector.onTouchEvent(event);
-		    }
-		});
+		//Count the pages
+		int nb_sounds_per_page = 2;
+		nb_page = SOUNDS.length/nb_sounds_per_page;
+		int reste = SOUNDS.length%nb_sounds_per_page;
+		if(reste > 0){
+			++nb_page;
+		}
+
+		for(int i=0; i<nb_page; ++i){
+			
+			int current_length;
+			int nb_sounds_in = SOUNDS.length;
+			
+			//Calculate the current length of the sounds array of the current page
+			if(nb_page == 1){
+				current_length = SOUNDS.length; 
+			}
+			else if(i == nb_page){
+				current_length = nb_sounds_in;
+			}
+			else{
+				current_length = nb_sounds_per_page; 
+				nb_sounds_in -= nb_sounds_per_page;
+			}
+			
+			//Fill the sounds array
+			String[] sounds = new String[current_length];
+			for(int j=0; j<current_length; ++j){
+				sounds[j] = SOUNDS[j*(i+1)];
+			}
+			
+			//Call the correct gridView in other words the correct page
+			switch(i){
+				case 0:
+					gridView = (GridView) findViewById(R.id.gridView1);
+					break;
+				case 1:
+					gridView = (GridView) findViewById(R.id.gridView2);
+					break;
+			}
+
+			//Fill the gridView
+			gridView.setAdapter(new ImageAdapter(this, sounds));
+			
+			gridView.setOnItemClickListener(new OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View v,
+						int position, long id) {
+					Toast.makeText(
+							getApplicationContext(),
+							((TextView) v.findViewById(R.id.grid_item_label))
+							.getText(), Toast.LENGTH_SHORT).show();
+					playThatSound("hello");
+				}
+			});
+			
+			gridView.setOnTouchListener(new OnTouchListener(){
+			    @Override
+			    public boolean onTouch(View v, MotionEvent event) {
+			        return detector.onTouchEvent(event);
+			    }
+			});
+		}
 		
 		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
 		slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
@@ -105,16 +128,19 @@ public class MainActivity extends Activity implements OnGestureListener {
 	
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		if(Math.abs(e1.getY()-e2.getY()) > 250) return false;
-		
-		if((e1.getX()-e2.getX()) > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY){
-			view.setInAnimation(slideLeftIn);
-			view.setOutAnimation(slideLeftOut);
-			view.showNext();
-		}else if((e2.getX()-e1.getX()) > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY){
-			view.setInAnimation(slideRightIn);
-			view.setOutAnimation(slideRightOut);
-			view.showPrevious();
+		if(nb_page>1){
+			if(Math.abs(e1.getY()-e2.getY()) > 250) return false;
+			
+			if((e1.getX()-e2.getX()) > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY){
+				view.setInAnimation(slideLeftIn);
+				view.setOutAnimation(slideLeftOut);
+				view.showNext();
+			}
+			else if((e2.getX()-e1.getX()) > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY){
+				view.setInAnimation(slideRightIn);
+				view.setOutAnimation(slideRightOut);
+				view.showPrevious();
+			}
 		}
 			
 		return false;
