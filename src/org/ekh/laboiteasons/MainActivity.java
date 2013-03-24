@@ -8,6 +8,7 @@ import org.ekh.adapter.ImageAdapter;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
@@ -26,7 +27,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 	
 	GridView gridView;
 	static final String[] SOUNDS = new String[] { 
-		"dayum","fart","hallelujah","applause","cow", "check","bell","dayum","cat","ninja" };
+		"dayum","fart","hallelujah","applause","cow", "check","bell","dayum","cat","ninja", "dayum","fart","hallelujah","applause","cow", "check","bell","dayum","cat","ninja" };
 	
 	MediaPlayer mp = null;
 	
@@ -43,6 +44,8 @@ public class MainActivity extends Activity implements OnGestureListener {
 	private ViewFlipper view;
 	
 	private int nb_page;
+	
+	private static final String TAG = "LaBoiteASons";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,37 +56,51 @@ public class MainActivity extends Activity implements OnGestureListener {
 		detector = new GestureDetector(this,this);
 		view = (ViewFlipper)findViewById(R.id.flipper);
 		
+		Log.v(TAG, "nb_sounds=" + SOUNDS.length);
+		
+		
+		int nb_sounds_per_page = 20;
+		int current_length = SOUNDS.length;
+		int nb_sounds_remaining = SOUNDS.length;
+		
 		//Count the pages
-		int nb_sounds_per_page = 3;
 		nb_page = SOUNDS.length/nb_sounds_per_page;
+		Log.v(TAG, "nb_page=" + nb_page);
 		int reste = SOUNDS.length%nb_sounds_per_page;
+		Log.v(TAG, "reste=" + reste);
 		if(reste > 0){
 			++nb_page;
 		}
-
+		Log.v(TAG, "nb_page=" + nb_page);
+		
 		for(int i=0; i<nb_page; ++i){
-			
-			int current_length;
-			int nb_sounds_in = SOUNDS.length;
-			
+			Log.v(TAG, "in first for");
+
 			//Calculate the current length of the sounds array of the current page
-			if(nb_page == 1){
-				current_length = SOUNDS.length; 
+			//if it's the last page
+			if(i == (nb_page-1)){
+				current_length = nb_sounds_remaining;
+				Log.v(TAG, "else if");
+				
 			}
-			else if(i == nb_page){
-				current_length = nb_sounds_in;
-			}
-			else{
+			else if(nb_page > 1){
 				current_length = nb_sounds_per_page; 
-				nb_sounds_in -= nb_sounds_per_page;
+				nb_sounds_remaining -= nb_sounds_per_page;
+				Log.v(TAG, "else");
 			}
+			
+			
+			Log.v(TAG, "current_length="+current_length);
+			Log.v(TAG, "nb_sounds_in="+nb_sounds_remaining);
 			
 			//Fill the sounds array
 			String[] sounds = new String[current_length];
 			for(int j=0; j<current_length; ++j){
 				sounds[j] = SOUNDS[j*(i+1)];
+				//Log.v(TAG, "in second for");
 			}
 			
+			Log.v(TAG, "before switch");
 			//Call the correct gridView in other words the correct page
 			switch(i){
 				case 0:
@@ -94,6 +111,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 					break;
 			}
 
+			Log.v(TAG, "after switch");
 			//Fill the gridView
 			gridView.setAdapter(new ImageAdapter(this, sounds));
 			
