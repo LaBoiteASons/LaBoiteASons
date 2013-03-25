@@ -27,7 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -62,27 +61,19 @@ public class MainActivity extends Activity implements OnGestureListener {
 		parseXML();
 		detector = new GestureDetector(this,this);
 		view = (ViewFlipper)findViewById(R.id.flipper);
-		
-		Log.v(TAG, "nb_sounds=" + SOUNDS.length);
-		
-		
+
 		int nb_sounds_per_page = 9;
 		int current_length = SOUNDS.length;
 		int nb_sounds_remaining = SOUNDS.length;
 		
 		//Count the pages
 		nb_page = SOUNDS.length/nb_sounds_per_page;
-		Log.v(TAG, "nb_page=" + nb_page);
 		int reste = SOUNDS.length%nb_sounds_per_page;
-		Log.v(TAG, "reste=" + reste);
 		if(reste > 0){
 			++nb_page;
 		}
-		Log.v(TAG, "nb_page=" + nb_page);
 		
 		for(int i=0; i<nb_page; ++i){
-			Log.v(TAG, "in first for");
-
 			//Calculate the current length of the sounds array of the current page
 			//if it's the last page
 			if(i == (nb_page-1)){
@@ -93,21 +84,14 @@ public class MainActivity extends Activity implements OnGestureListener {
 			else if(nb_page > 1){
 				current_length = nb_sounds_per_page; 
 				nb_sounds_remaining -= nb_sounds_per_page;
-				Log.v(TAG, "else");
 			}
-			
-			
-			Log.v(TAG, "current_length="+current_length);
-			Log.v(TAG, "nb_sounds_in="+nb_sounds_remaining);
 			
 			//Fill the sounds array
 			String[] sounds = new String[current_length];
 			for(int j=0; j<current_length; ++j){
 				sounds[j] = SOUNDS[j*(i+1)];
-				//Log.v(TAG, "in second for");
 			}
 			
-			Log.v(TAG, "before switch");
 			//Call the correct gridView in other words the correct page
 			switch(i){
 				case 0:
@@ -118,7 +102,6 @@ public class MainActivity extends Activity implements OnGestureListener {
 					break;
 			}
 
-			Log.v(TAG, "after switch");
 			//Fill the gridView
 			gridView.setAdapter(new ImageAdapter(this, sounds));
 			
@@ -272,4 +255,5 @@ public class MainActivity extends Activity implements OnGestureListener {
 
 
 	}
+
 }
