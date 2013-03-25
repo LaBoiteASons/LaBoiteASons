@@ -1,11 +1,19 @@
 package org.ekh.laboiteasons;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import org.ekh.adapter.ImageAdapter;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import android.app.Activity;
+import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +27,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -26,9 +35,7 @@ import android.widget.ViewFlipper;
 public class MainActivity extends Activity implements OnGestureListener {
 	
 	GridView gridView;
-	static final String[] SOUNDS = new String[] { 
-		"dayum","fart","hallelujah","applause","cow", "check","bell","dayum","cat","ninja", "dayum","fart","hallelujah","applause","cow", "check","bell","dayum","cat","ninja" };
-	
+	String[] SOUNDS;
 	MediaPlayer mp = null;
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
@@ -52,7 +59,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		parseXML();
 		detector = new GestureDetector(this,this);
 		view = (ViewFlipper)findViewById(R.id.flipper);
 		
@@ -223,4 +230,46 @@ public class MainActivity extends Activity implements OnGestureListener {
             mp = MediaPlayer.create(this, getResId(theSoundString, R.raw.class));
         mp.start();
     }
+	
+	private void parseXML() {
+		AssetManager assetManager = getBaseContext().getAssets();
+		try {
+			InputStream is = assetManager.open("sound.xml");
+			SAXParserFactory spf = SAXParserFactory.newInstance();
+			SAXParser sp = spf.newSAXParser();
+			XMLReader xr = sp.getXMLReader();
+
+			XMLParser myXMLPasrer = new XMLParser();
+			xr.setContentHandler(myXMLPasrer);
+			InputSource inStream = new InputSource(is);
+			xr.parse(inStream);
+			
+			detector = new GestureDetector(this,this);
+			view = (ViewFlipper)findViewById(R.id.flipper);
+
+			//TextView tv = new TextView(this);
+
+			ArrayList<SoundInfo> soundList = myXMLPasrer.getSoundList();
+			SOUNDS = new String[soundList.size()];
+			int i = 0;
+			for(SoundInfo soundInfo: soundList){			
+				SOUNDS[i] = soundInfo.getNameSound();
+				i++;
+			}
+
+
+			slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+			slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
+			slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+			slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+			
+			
+			is.close();
+
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
+
+
+	}
 }
