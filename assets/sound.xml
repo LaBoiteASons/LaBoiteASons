@@ -1,82 +1,146 @@
 <sounds>
-	<sound>
+    <sound>
 		<id>1</id>
-		<name>hallelujah</name>
-	</sound>
-	<sound>
-		<id>2</id>
 		<name>applause</name>
 	</sound>
 	<sound>
+		<id>2</id>
+		<name>batman</name>
+	</sound>
+	<sound>
 		<id>3</id>
-		<name>bell</name>
+		<name>bazinga</name>
 	</sound>
 	<sound>
 		<id>4</id>
-		<name>cat</name>
+		<name>bell</name>
 	</sound>
 	<sound>
 		<id>5</id>
-		<name>check</name>
+		<name>cat</name>
 	</sound>
 	<sound>
 		<id>6</id>
-		<name>cow</name>
+		<name>check</name>
 	</sound>
 	<sound>
 		<id>7</id>
-		<name>dayum</name>
+		<name>chipmunk</name>
 	</sound>
 	<sound>
 		<id>8</id>
-		<name>fart</name>
+		<name>coffee</name>
 	</sound>
 	<sound>
 		<id>9</id>
-		<name>klaxon</name>
+		<name>cow</name>
 	</sound>
 	<sound>
 		<id>10</id>
-		<name>laser</name>
+		<name>dayum</name>
 	</sound>
 	<sound>
 		<id>11</id>
-		<name>mario</name>
+		<name>fart</name>
 	</sound>
 	<sound>
 		<id>12</id>
-		<name>modem</name>
+		<name>hakuna</name>
 	</sound>
 	<sound>
 		<id>13</id>
-		<name>ninja</name>
+		<name>hallelujah</name>
 	</sound>
 	<sound>
 		<id>14</id>
-		<name>pepito</name>
+		<name>klaxon</name>
 	</sound>
 	<sound>
 		<id>15</id>
-		<name>punch</name>
+		<name>laser</name>
 	</sound>
 	<sound>
 		<id>16</id>
-		<name>slap</name>
+		<name>loose</name>
 	</sound>
 	<sound>
 		<id>17</id>
-		<name>vader</name>
+		<name>mario</name>
 	</sound>
 	<sound>
 		<id>18</id>
-		<name>vomit</name>
+		<name>modem</name>
 	</sound>
 	<sound>
 		<id>19</id>
-		<name>wiseau</name>
+		<name>ninja</name>
 	</sound>
 	<sound>
 		<id>20</id>
+		<name>okay</name>
+	</sound>
+	<sound>
+		<id>21</id>
+		<name>opera</name>
+	</sound>
+	<sound>
+		<id>22</id>
+		<name>owl</name>
+	</sound>
+	<sound>
+		<id>23</id>
+		<name>paris</name>
+	</sound>
+	<sound>
+		<id>24</id>
+		<name>peacock</name>
+	</sound>
+	<sound>
+		<id>25</id>
+		<name>pepito</name>
+	</sound>
+	<sound>
+		<id>26</id>
+		<name>punch</name>
+	</sound>
+	<sound>
+		<id>27</id>
+		<name>robot</name>
+	</sound>
+	<sound>
+		<id>28</id>
+		<name>slap</name>
+	</sound>
+	<sound>
+		<id>29</id>
+		<name>timmy</name>
+	</sound>
+	<sound>
+		<id>30</id>
+		<name>vader</name>
+	</sound>
+	<sound>
+		<id>31</id>
+		<name>vomit</name>
+	</sound>
+	<sound>
+		<id>32</id>
 		<name>wilhelm</name>
+	</sound>
+	<sound>
+		<id>33</id>
+		<name>win</name>
+	</sound>
+	<sound>
+		<id>34</id>
+		<name>wiseau</name>
+	</sound>
+	<sound>
+		<id>35</id>
+		<name>yeah</name>
+	</sound>
+	<sound>
+		<id>36</id>
+		<name>zombie</name>
 	</sound>
 </sounds>

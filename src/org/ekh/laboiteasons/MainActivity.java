@@ -62,7 +62,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 		detector = new GestureDetector(this,this);
 		view = (ViewFlipper)findViewById(R.id.flipper);
 
-		int nb_sounds_per_page = 9;
+		int nb_sounds_per_page = 20;
 		int current_length = SOUNDS.length;
 		int nb_sounds_remaining = SOUNDS.length;
 		
@@ -89,7 +89,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 			//Fill the sounds array
 			String[] sounds = new String[current_length];
 			for(int j=0; j<current_length; ++j){
-				sounds[j] = SOUNDS[j*(i+1)];
+				sounds[j] = SOUNDS[j+(i*nb_sounds_per_page)];
 			}
 			
 			//Call the correct gridView in other words the correct page
