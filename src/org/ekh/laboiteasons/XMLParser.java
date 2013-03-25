@@ -14,6 +14,7 @@ public class XMLParser extends DefaultHandler {
 	SoundInfo soundInfo;
 	ArrayList<SoundInfo> soundList;
 
+	//return list of sounds
 	public ArrayList<SoundInfo> getSoundList() {
 		return soundList;
 	}
