@@ -59,7 +59,7 @@ public class MainActivity extends Activity implements OnGestureListener {
 		Log.v(TAG, "nb_sounds=" + SOUNDS.length);
 		
 		
-		int nb_sounds_per_page = 20;
+		int nb_sounds_per_page = 9;
 		int current_length = SOUNDS.length;
 		int nb_sounds_remaining = SOUNDS.length;
 		
